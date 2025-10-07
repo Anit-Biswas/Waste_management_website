@@ -1,0 +1,79 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1" />
+  <title>Registration</title>
+ <link rel="stylesheet" href="register.css">
+</head>
+<body>
+
+  <div class="container" role="main">
+    <aside class="hero" aria-hidden="false">
+      <div class="brand" >
+        <div class="logo" aria-hidden="true">RG</div>
+        <div>
+          <div style="font-weight:700">RegisterGrid</div>
+          <div style="font-size:13px;color:var(--muted)">Simple, secure sign-up form</div>
+        </div>
+      </div>
+
+      <h1>Create your account</h1>
+      <p>Sign up to access the dashboard, save your preferences, and start building. We only store essential information and validate inputs locally before sending to a server.</p>
+    </aside>
+
+    <section class="card" aria-labelledby="form-title">
+      <h2 id="form-title" style="margin:0 0 8px 0">Registration</h2>
+
+      <form id="regForm" novalidate>
+        <div class="form-row">
+          <div class="field" style="flex:1">
+            <label for="fullname">Full name</label>
+            <input id="fullname" name="fullname" type="text" autocomplete="name" placeholder="e.g. Anit Biswas" required aria-required="true" />
+            <div id="nameMsg" class="msg" aria-live="polite"></div>
+          </div>
+
+          <div class="field" style="width:180px">
+            <label for="role">Role</label>
+            <select id="role" name="role" required aria-required="true">
+              <option value="">Select role</option>
+              <option value="user">User</option>
+              <option value="moderator">Moderator</option>
+              <option value="admin">Admin</option>
+            </select>
+            <div id="roleMsg" class="msg" aria-live="polite"></div>
+          </div>
+        </div>
+
+        <div class="field">
+          <label for="email">Email address</label>
+          <input id="email" name="email" type="email" autocomplete="email" placeholder="you@example.com" required aria-required="true" />
+          <div id="emailMsg" class="msg" aria-live="polite"></div>
+        </div>
+
+        <div class="field password-row">
+          <label for="password">Password</label>
+          <input id="password" name="password" type="password" autocomplete="new-password" placeholder="At least 8 characters" required aria-required="true" />
+          <button type="button" class="toggle-pass" id="togglePass" aria-label="Show password">Show</button>
+          <div id="passMsg" class="msg" aria-live="polite"></div>
+          <div class="help">Password must be at least 8 characters, and include an uppercase letter and a number.</div>
+        </div>
+
+        <div class="submit-row">
+          <button class="primary" type="submit">Create account</button>
+          <button type="button" class="ghost" id="clearBtn">Clear</button>
+        </div>
+
+        <div id="globalMsg" class="msg" style="min-height:18px" aria-live="polite"></div>
+      </form>
+
+      <div id="preview" class="preview" hidden aria-hidden="true">
+        <strong>Preview:</strong>
+        <div id="previewContent" style="margin-top:8px">No submission yet.</div>
+      </div>
+    </section>
+  </div>
+
+<script src="register.js"></script>
+</body>
+</html>

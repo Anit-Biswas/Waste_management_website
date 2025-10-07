@@ -1,0 +1,319 @@
+<!DOCTYPE html><html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Waste Management System </title>
+  <link rel="stylesheet" href="index.css">
+</head>
+<body>
+  <div class="app" id="app">
+    <header>
+  <div class="nav">
+    <!-- Place logo section here -->
+    <div class="logo-section" style="display:flex;align-items:center;gap:10px;">
+      <img src="logo.png" alt="SuchiSankapl Logo" style="height:32px;">
+      <span class="brand">SuchiSankalp</span>
+    </div>
+    <div class="grow"></div>
+    <span id="userBadge" class="chip">Anit</span>
+    <button id="logoutBtn" class="btn outline hidden">Logout</button>
+  </div>
+</header><!-- AUTH VIEWS -->
+<div id="authViews">
+  
+  <section class="center">
+    <div class="panel auth">
+      <h2>Secure Login</h2>
+      <div class="row">
+        <input id="loginEmail" class="input" type="email" placeholder="email" />
+      </div>
+      <div class="row">
+        <input id="loginPass" class="input" type="password" placeholder="password" />
+      </div>
+      <div class="row">
+        <button class="btn" onclick="UI.login()">Login</button>
+        <span id="loginErr" class="tag hidden"></span>
+      </div>
+      <div class="row" style="font-size:12px;color:#5a728a"></div>
+    </div>
+  </section>
+</div>
+
+<!-- MAIN APP LAYOUT -->
+<div id="main" class="layout hidden">
+  <aside>
+    <div class="section">
+      <h4>Dashboard</h4>
+      <div class="menu">
+        <button data-view="home" class="active">Overview</button>
+        <button data-view="profile">User Dashboard & Profile</button>
+        <button data-view="booking">Booking & Scheduling</button>
+        <button data-view="payments">Payment / Rewards</button>
+        <button data-view="incentives">Incentive & Penalization</button>
+        <button data-view="collection">Waste Collection & Data Capture</button>
+        <button data-view="monitoring">Monitoring & Reporting</button>
+        <button data-view="facilities">Facility Locator & Support</button>
+        <button data-view="training">Training & Updates</button>
+        <button data-view="admin" id="adminMenu" class="hidden">Admin & Govt Backend</button>
+      </div>
+    </div>
+  </aside>
+
+  <main>
+    <!-- Overview -->
+    <section id="view-home" class="panel">
+      <h2>Overview</h2>
+      <p class="muted">Personalized dashboard with quick KPIs</p>
+      <div class="kpi">
+        <div class="card">
+          <div class="label">Upcoming Pickups</div>
+          <div class="value" id="kpiUpcoming">0</div>
+          <div class="row"><span class="tag" id="kpiNextDate">—</span></div>
+        </div>
+        <div class="card">
+          <div class="label">Rewards</div>
+          <div class="value" id="kpiRewards">0</div>
+          <div class="row"><span class="tag">Lifetime Points</span></div>
+        </div>
+        <div class="card">
+          <div class="label">Compliance</div>
+          <div class="value" id="kpiCompliance">100%</div>
+          <div class="row"><span class="tag" id="kpiFines">No fines</span></div>
+        </div>
+        <div class="card">
+          <div class="label">Transactions</div>
+          <div class="value" id="kpiTx">0</div>
+          <div class="row"><span class="tag">Last 30 days</span></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Profile -->
+    <section id="view-profile" class="panel hidden">
+      <h2>Profile Details & Notifications</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Profile</h3>
+          <div id="profileBox"></div>
+        </div>
+        <div class="card">
+          <h3>Notifications</h3>
+          <div id="notifBox" class="empty">No notifications yet.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Booking -->
+    <section id="view-booking" class="panel hidden">
+      <h2>Booking & Scheduling</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>New Booking</h3>
+          <div class="row">
+            <div style="flex:1">
+              <label>Date</label>
+              <input id="bkDate" type="date" class="input" />
+            </div>
+            <div style="width:180px">
+              <label>Type</label>
+              <select id="bkType" class="select">
+                <option>Organic</option>
+                <option>Plastic</option>
+                <option>Paper</option>
+                <option>E-waste</option>
+              </select>
+            </div>
+          </div>
+          <div class="row">
+            <div style="flex:1">
+              <label>Frequency</label>
+              <select id="bkFreq" class="select">
+                <option>One-time</option>
+                <option>Weekly</option>
+                <option>Monthly</option>
+              </select>
+            </div>
+            <div style="flex:1">
+              <label>Address</label>
+              <input id="bkAddr" class="input" placeholder="Area / Locality" />
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn" onclick="UI.addBooking()">Book Pickup</button>
+            <span class="tag">Status updates sent as notifications</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Booking History</h3>
+          <div id="bkTable"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Payments & Rewards -->
+    <section id="view-payments" class="panel hidden">
+      <h2>Payment / Reward Calculation & Processing</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Make a Payment</h3>
+          <div class="row">
+            <div style="flex:1">
+              <label>Purpose</label>
+              <select id="payPurpose" class="select">
+                <option>Service Fee</option>
+                <option>Fine</option>
+                <option>Donation</option>
+              </select>
+            </div>
+            <div style="width:180px">
+              <label>Amount (₹)</label>
+              <input id="payAmt" type="number" class="input" placeholder="500" />
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn" onclick="UI.pay()">Process Payment</button>
+            <span class="tag">Reward points auto-calculated</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Transactions</h3>
+          <div id="txTable"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Incentive & Penalization -->
+    <section id="view-incentives" class="panel hidden">
+      <h2>Incentive & Penalization</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Compliance Report</h3>
+          <div id="compReport" class="empty">No fines. You're doing great! 🎉</div>
+        </div>
+        <div class="card">
+          <h3>Rewards Summary</h3>
+          <div id="rewardBox" class="empty">No rewards yet.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Waste Collection & Data Capture -->
+    <section id="view-collection" class="panel hidden">
+      <h2>Waste Collection & Data Capture</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Record Pickup (Field)</h3>
+          <div class="row">
+            <div style="flex:1">
+              <label>Date</label>
+              <input id="capDate" type="date" class="input" />
+            </div>
+            <div style="width:180px">
+              <label>Waste Type</label>
+              <select id="capType" class="select">
+                <option>Organic</option>
+                <option>Plastic</option>
+                <option>Paper</option>
+                <option>E-waste</option>
+              </select>
+            </div>
+            <div style="width:180px">
+              <label>Weight (kg)</label>
+              <input id="capKg" type="number" class="input" placeholder="2.5" />
+            </div>
+          </div>
+          <div class="row">
+            <button class="btn" onclick="UI.capture()">Save Record</button>
+            <span class="tag">Compliance verification (mock)</span>
+          </div>
+        </div>
+        <div class="card">
+          <h3>Records</h3>
+          <div id="capTable"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Monitoring & Reporting -->
+    <section id="view-monitoring" class="panel hidden">
+      <h2>Monitoring & Reporting</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Activity Trend (last 10 records)</h3>
+          <canvas id="chart" height="160"></canvas>
+        </div>
+        <div class="card">
+          <h3>Community Participation</h3>
+          <div id="commBox" class="empty">No community events yet.</div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:12px">
+        <h3>ULB / Government Dashboard</h3>
+        <div id="govtBox" class="empty">Login as <b>Admin</b> to see analytics.</div>
+      </div>
+    </section>
+
+    <!-- Facility Locator & Support -->
+    <section id="view-facilities" class="panel hidden">
+      <h2>Facility Locator & Support</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Nearby Facilities</h3>
+          <div id="facTable"></div>
+        </div>
+        <div class="card">
+          <h3>Support / Helpdesk</h3>
+          <div class="row">
+            <input id="supportMsg" class="input" placeholder="Describe your issue" />
+            <button class="btn" onclick="UI.raiseTicket()">Raise Ticket</button>
+          </div>
+          <div id="ticketBox" class="empty">No tickets.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Training & Updates -->
+    <section id="view-training" class="panel hidden">
+      <h2>Continuous Training & Updates</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>Training Modules</h3>
+          <ul id="trainList"></ul>
+        </div>
+        <div class="card">
+          <h3>Digital Certificates</h3>
+          <div id="certBox" class="empty">Complete modules to unlock certificates.</div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Admin & Government Backend -->
+    <section id="view-admin" class="panel hidden">
+      <h2>Admin & Government Backend</h2>
+      <div class="grid-2">
+        <div class="card">
+          <h3>User Management</h3>
+          <div id="userTable"></div>
+        </div>
+        <div class="card">
+          <h3>Analytics</h3>
+          <div id="adminKPI" class="kpi"></div>
+        </div>
+      </div>
+      <div class="panel" style="margin-top:12px">
+        <h3>Policy Compliance</h3>
+        <div class="row">
+          <span class="tag">Segregation: 92%</span>
+          <span class="tag">Timely Pickup: 96%</span>
+          <span class="tag">Complaints Resolved: 88%</span>
+        </div>
+      </div>
+    </section>
+  </main>
+</div>
+
+  </div>  // ...existing code...
+<script src="index.js"></script>
+// ...existing code...
+</body>
+</html>
